@@ -59,7 +59,7 @@ class ProjectsController < ApplicationController
 
   def project_params
   	params.require(:project).permit(:project_name, :start_date, :end_date, :status,
-     developer_ids: [])
+     developer_ids: [], avatars: [])
   end
 
   def check_developers_exists
