@@ -1,0 +1,46 @@
+<div style="border: 2px solid black; height: 100vh; display: flex; justify-content: center; align-items: center;">
+
+  <div style="width: 300px; border: 2px solid black; padding: 20px; border-radius: 20px;">
+
+    <%= form_with model: [@project, @task], local: true do |form| %>
+
+      <div>
+        <%= form.label :name %><br>
+        <%= form.text_field :name %>
+      </div>
+      <br>
+
+      <div>
+        <%= form.label :description %><br>
+        <%= form.text_area :description, rows: 3 %>
+      </div>
+      <br>
+
+      <div>
+        <%= form.label :priority %><br>
+        <%= form.select :priority, ["Low", "Medium", "High"] %>
+      </div>
+      <br>
+
+      <div>
+        <%= form.label :status %><br>
+        <%= form.select :status, ["Pending", "In-Progress", "Completed"] %>
+      </div>
+      <br>
+
+      <div>
+        <%= form.label :developers %><br>
+        <%= form.collection_check_boxes :developer_ids, @developers, :id, :name do |b| %>
+          <div>
+            <%= b.check_box %>
+            <%= b.label %>
+          </div>
+        <% end %>
+      </div>
+
+      <br>
+      <%= form.submit "Create Task" %>
+
+    <% end %>
+  </div>
+</div>

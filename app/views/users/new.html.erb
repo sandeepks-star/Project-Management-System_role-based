@@ -1,0 +1,58 @@
+<div style="border: 2px solid black; height: 100vh; display: flex; justify-content: center; align-items: center;">
+
+  <div style="max-width: 100%; width: 300px; border: 2px solid black; padding: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 20px;">
+
+    <h1>Sign Up</h1>
+
+    <%= form_with model: @user, local: true do |form| %>
+
+      <div style="margin-bottom: 10px;">
+        <%= form.label :name, "Name: " %>
+        <br>
+        <%= form.text_field :name %>
+      </div>
+
+      <br>
+
+      <div style="margin-bottom: 10px;">
+        <%= form.label :email, "Email: " %>
+        <br>
+        <%= form.email_field :email %>
+      </div>
+
+      <br>
+
+      <div style="margin-bottom: 10px;">
+        <%= form.label :password, "Password: " %>
+        <br>
+        <%= form.password_field :password %>
+      </div>
+
+      <br>
+
+      <div style="margin-bottom: 10px;">
+        <%= form.label :type, "Type: " %>
+
+       <%#  <%= form.radio_button :type, "Manager" %>
+       <%# <%= form.label :type_manager, "Manager" %>
+       <%# <%= form.radio_button :type, "Developer" %>
+       <%# <%= form.label :type_developer, "Developer" %>
+
+        <%= form.select :type, [
+          "Manager",
+          "Developer"
+          ] %>
+      </div>
+
+
+      <%= form.submit "Sign-Up" %>
+
+      <div>
+        <br>
+        <%= link_to "Click Here", new_login_path %>
+        to Login
+      </div>
+
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div style="padding: 20px; max-width: 600px; margin: auto; border: 2px solid black; border-radius: 10px;">
+
+  <h2>Project Details</h2>
+
+  <p>
+    <strong>Project Name:</strong>
+    <%= @project.project_name %>
+  </p>
+
+  <p>
+    <strong>Start Date:</strong>
+    <%= @project.start_date %>
+  </p>
+
+  <p>
+    <strong>End Date:</strong>
+    <%= @project.end_date %>
+  </p>
+
+  <p>
+    <strong>Status:</strong>
+    <%= @project.status %>
+  </p>
+
+  <hr>
+
+  <h3>Assigned Developers</h3>
+
+  <% if @project.developers.any? %>
+    <ul>
+      <% @project.developers.each do |developer| %>
+        <li>
+          <%= developer.name %> (<%= developer.email %>)
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No developers assigned to this project.</p>
+  <% end %>
+
+  <hr>
+
+  <div style="margin-top: 15px; display: flex; justify-content: space-between;">
+    <div>
+      <%= link_to "Back to Projects", projects_path %>
+    </div>
+    <div>
+      <%= link_to "Edit Project", edit_project_path(@project.id) %>
+    </div>
+    <div>
+      <%= link_to "Show Tasks", project_tasks_path(@project) %>
+    </div>
+  </div>
+
+</div>

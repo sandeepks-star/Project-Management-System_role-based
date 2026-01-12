@@ -1,0 +1,62 @@
+<div style="padding: 20px; max-width: 600px; margin: auto; border: 2px solid black; border-radius: 10px;">
+
+  <h2>Task Details</h2>
+
+  <p>
+    <strong>Task Name:</strong>
+    <%= @task.name %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= @task.description %>
+  </p>
+
+  <p>
+    <strong>Priority:</strong>
+    <%= @task.priority %>
+  </p>
+
+  <p>
+    <strong>Status:</strong>
+    <%= @task.status %>
+  </p>
+
+  <hr>
+
+  <h3>Assigned Developers</h3>
+
+  <% if @task.developers.any? %>
+    <ul>
+      <% @task.developers.each do |developer| %>
+        <li>
+          <%= developer.name %> (<%= developer.email %>)
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No developers assigned to this task.</p>
+  <% end %>
+
+  <hr>
+
+  <div style="margin-top: 15px; display: flex; justify-content: space-between;">
+
+    <div>
+      <%= link_to "Back to Tasks", project_tasks_path(@project) %>
+    </div>
+
+    <% if current_user.is_a?(Manager) %>
+      <div>
+        <%= link_to "Edit Task",
+              edit_project_task_path(@project, @task) %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= link_to "Back to Project", project_path(@project) %>
+    </div>
+
+  </div>
+
+</div>

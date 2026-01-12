@@ -1,0 +1,29 @@
+<div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+
+  <div style="max-width: 100%; border: 2px solid black; padding: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 20px;">
+
+    <h1>Login</h1>
+
+    <%= form_with url: login_path, data: {turbo: false} do |form| %>
+
+      <div style="margin-bottom: 10px;">
+        <%= form.label :email, "Email: " %>
+        <br>
+        <%= form.email_field :email %>
+      </div>
+      <br>
+      <div style="margin-bottom: 10px;">
+        <%= form.label :password, "Password: " %>
+        <br>
+        <%= form.password_field :password %>
+      </div>
+
+      <%= form.submit "Login" %>
+
+      <div >
+        <p>Don't have an account <%= link_to "Click Here", users_path %> </p>
+      </div>
+
+    <% end %>
+  </div>
+</div>

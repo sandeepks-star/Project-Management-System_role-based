@@ -1,0 +1,62 @@
+<div style="padding: 15px; margin: 15px">
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    
+    <div>
+      <h1>All Tasks</h1>
+    </div>
+
+    <div style="display: flex; gap: 10px">
+
+      <% if current_user.is_a?(Manager) %>
+        <%= link_to "Create New Task", new_project_task_path(@project) %>
+      <% end %>
+
+      <%= link_to "Back to Projects", projects_path %>
+
+      <%= button_to "Logout",
+            logout_path,
+            method: :delete,
+            data: { confirm: "Are you sure?" } %>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 20px">
+    <table border="1" cellpadding="8" cellspacing="0">
+
+      <tr>
+        <th>Task Id</th>
+        <th>Name</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+      </tr>
+
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= task.id %></td>
+          <td><%= task.name %></td>
+          <td><%= task.priority %></td>
+          <td><%= task.status %></td>
+
+          <td>
+            <%= link_to "Show",
+                  project_task_path(@project, task) %>
+          </td>
+
+          <td>
+            <% if current_user.is_a?(Manager) %>
+              <%= button_to "Delete",
+                    project_task_path(@project, task),
+                    method: :delete,
+                    data: { confirm: "Are you sure?" } %>
+            <% end %>
+          </td>
+
+        </tr>
+      <% end %>
+
+    </table>
+  </div>
+</div>
