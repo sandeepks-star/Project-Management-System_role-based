@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
+  # helper_method :show_all_developers
+
   private
 
   def current_user
@@ -22,6 +24,10 @@ class ApplicationController < ActionController::Base
     unless @current_user.is_a?(Manager)
       redirect_to projects_path, alert: "Only Managers can create Projects"
     end
+  end
+
+  def show_all_developers
+    @developers = Developer.all
   end
 
 end

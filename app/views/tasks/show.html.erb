@@ -1,62 +1,59 @@
-<div style="padding: 20px; max-width: 600px; margin: auto; border: 2px solid black; border-radius: 10px;">
-
-  <h2>Task Details</h2>
-
-  <p>
-    <strong>Task Name:</strong>
-    <%= @task.name %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= @task.description %>
-  </p>
-
-  <p>
-    <strong>Priority:</strong>
-    <%= @task.priority %>
-  </p>
-
-  <p>
-    <strong>Status:</strong>
-    <%= @task.status %>
-  </p>
-
-  <hr>
-
-  <h3>Assigned Developers</h3>
-
-  <% if @task.developers.any? %>
-    <ul>
-      <% @task.developers.each do |developer| %>
-        <li>
-          <%= developer.name %> (<%= developer.email %>)
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>No developers assigned to this task.</p>
-  <% end %>
-
-  <hr>
-
-  <div style="margin-top: 15px; display: flex; justify-content: space-between;">
+<div style="background-image: linear-gradient(to bottom, #1a1a2e, #0f3460); height: 100vh; width: 100vw;">
+  <div style="display: flex; gap: 20px; padding: 20px; padding-left:10px">
 
     <div>
-      <%= link_to "Back to Tasks", project_tasks_path(@project) %>
+      <%= link_to "Back to Tasks", project_path(@project), style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
     </div>
 
     <% if current_user.is_a?(Manager) %>
       <div>
-        <%= link_to "Edit Task",
-              edit_project_task_path(@project, @task) %>
+        <%= link_to "Edit Task", edit_project_task_path(@project, @task), style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
       </div>
     <% end %>
 
     <div>
-      <%= link_to "Back to Project", project_path(@project) %>
+      <%= link_to "Back to Project", project_path(@project), style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
     </div>
-
   </div>
 
+  <div style="padding: 20px; max-width: 600px; margin: auto; border: 1px solid gray; border-radius: 10px; padding-top: 20px;">
+
+    <h2 style="color: white">Task Details</h2>
+
+    <p style="color: white">
+      <strong>Task Name:</strong>
+      <%= @task.name %>
+    </p>
+
+    <p style="color: white">
+      <strong>Description:</strong>
+      <%= @task.description %>
+    </p>
+
+    <p style="color: white">
+      <strong>Priority:</strong>
+      <%= @task.priority %>
+    </p>
+
+    <p style="color: white">
+      <strong>Status:</strong>
+      <%= @task.status %>
+    </p>
+
+    <hr>
+
+    <h3 style="color: white">Assigned Developers</h3>
+
+    <% if @task.developers.any? %>
+      <ul style="color: white">
+        <% @task.developers.each do |developer| %>
+          <li>
+            <%= developer.name %> (<%= developer.email %>)
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No developers assigned to this task.</p>
+    <% end %>
+  </div>
 </div>
