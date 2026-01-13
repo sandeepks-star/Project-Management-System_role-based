@@ -28,13 +28,13 @@
 
       <div style="color: white">
         <%= form.label :priority %><br>
-        <%= form.select :priority, ["Low", "Medium", "High"] %>
+        <%= form.select :priority, Task.priorities.keys.map { |key| [key.humanize, key]} %>
       </div>
       <br>
 
       <div style="color: white">
         <%= form.label :status %><br>
-        <%= form.select :status, ["Pending", "In-Progress", "Completed"] %>
+        <%= form.select :status, Task.statuses.keys.map { |key| [key.humanize, key]} %>
       </div>
       <br>
 

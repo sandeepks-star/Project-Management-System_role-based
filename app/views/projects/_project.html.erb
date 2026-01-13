@@ -15,8 +15,8 @@
     <%= form_with model: project, local: true do |form| %>
 
       <div style="color: white">
-        <%= form.label :project_name %><br>
-        <%= form.text_field :project_name %>
+        <%= form.label :name %><br>
+        <%= form.text_field :name %>
       </div>
       <br>
       <div style="color: white">
@@ -36,7 +36,7 @@
       <br>
       <div style="color: white">
         <%= form.label :status %>
-        <%= form.select :status, ["Pending", "In-Progress", "Completed"] %>
+        <%= form.select :status, Project.statuses.keys.map { |key| [key.humanize, key]} %>
       </div>
       <br>
       <div style="color: white">

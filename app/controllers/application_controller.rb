@@ -1,9 +1,7 @@
 class ApplicationController < ActionController::Base
-  before_action :authorize_request
+  before_action :authenticate_request
 
   helper_method :current_user
-
-  # helper_method :show_all_developers
 
   private
 
@@ -11,7 +9,7 @@ class ApplicationController < ActionController::Base
     @current_user
   end
 
-  def authorize_request
+  def authenticate_request
     header = session[:token]
     decoded = JwtService.decode(header)
     @current_user = User.find(decoded[:user_id]) if decoded
@@ -25,9 +23,4 @@ class ApplicationController < ActionController::Base
       redirect_to projects_path, alert: "Only Managers can create Projects"
     end
   end
-
-  def show_all_developers
-    @developers = Developer.all
-  end
-
 end
