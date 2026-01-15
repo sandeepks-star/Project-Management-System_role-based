@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_request
-
+  before_action :if_current_user_is_nil
   helper_method :current_user
 
   private
@@ -22,5 +22,9 @@ class ApplicationController < ActionController::Base
     unless @current_user.is_a?(Manager)
       redirect_to projects_path, alert: "Only Managers can create Projects"
     end
+  end
+
+  def if_current_user_is_nil
+    redirect_to new_login_path if @current_user.nil?
   end
 end

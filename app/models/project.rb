@@ -1,7 +1,7 @@
 class Project < ApplicationRecord
-  byebug
-  after_create :send_project_notification
   has_many_attached :avatars
+
+  after_commit :send_email_to_developers
   belongs_to :manager, class_name: "User", foreign_key: "user_id"
 
   has_and_belongs_to_many :developers, class_name: "User", foreign_key: "project_id", join_table: "projects_users", association_foreign_key: "user_id"
@@ -21,8 +21,9 @@ class Project < ApplicationRecord
     end
   end
 
-  def send_project_notification
-    byebug
-    SendEmailToAssignedDeveloperMailer.project_or_task_assignment_confirmation(@project)
+  def send_email_to_developers
+    self.developers.each do |developer|
+      ProjectAssingmentMailer.project_assignment_email(developer, self).deliver_now
+    end
   end
 end

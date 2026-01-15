@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [ :new, :create ]
+  skip_before_action :authenticate_request, only: :create
+  skip_before_action :if_current_user_is_nil
 
   def new
     @user = User.new

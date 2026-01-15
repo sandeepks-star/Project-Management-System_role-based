@@ -6,9 +6,7 @@ class ProjectsController < ApplicationController
   before_action :check_developers_exists?, only: [ :create ]
 
   def index
-    return @projects = @current_user.projects if @current_user.is_a?(Manager)
-
-    @projects = @current_user.assigned_projects
+    @projects = @current_user.projects
   end
 
   def show
@@ -23,19 +21,19 @@ class ProjectsController < ApplicationController
     @project = @current_user.projects.new(project_params)
 
     if @project.save
-      @project.developer_ids = params[:project][:developer_ids]
+      @project.developer_ids = params.dig(:project, :developer_ids)
+
       redirect_to @project
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @project.update(project_params)
-      @project.developer_ids = params[:project][:developer_ids]
+      @project.developer_ids = params.dig(:project, :developer_ids)
       redirect_to @project
     else
       render :edit, status: :unprocessable_entity
@@ -43,12 +41,9 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    # error raise
     @project.destroy
     redirect_to projects_path
   end
-
-
 
   private
 
@@ -63,10 +58,21 @@ class ProjectsController < ApplicationController
   end
 
   def check_developers_exists?
-    dev_ids = params[:project][:developer_ids]
-    if dev_ids.present?
+    byebug
+    dev_ids = params.dig(:project, :developer_ids)
+
+    if dev_ids.blank?
+      flash[:alert] = "No developers selected"
+      redirect_to new_project_path
+    else
       @developers = Developer.where(id: dev_ids)
-      redirect_to new_project_path unless @developers.any?
+      byebug
+      @developers.each do |dev|
+        if Developer.find_by(id: dev).blank?
+          flash[:alert] = "Requested developer does not exits"
+          return
+        end
+      end
     end
   end
 end
