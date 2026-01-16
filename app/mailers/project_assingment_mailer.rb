@@ -1,5 +1,5 @@
 class ProjectAssingmentMailer < ApplicationMailer
-  default from: 'sandeepsaket196@gmail.com'
+  default from: 'sandeepks@shriffle.com'
 
   def project_assignment_email(developer_id, project)
     @dev_id = developer_id

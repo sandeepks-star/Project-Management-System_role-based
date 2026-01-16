@@ -1,22 +1,12 @@
-<div style="display: flex; justify-content: center; align-items: center;">
+<div style="display: flex; justify-content: center; align-items: center; width: auto; height: auto;">
 
-  <div style="width: 300px; border: 2px solid gray; padding: 20px; border-radius: 20px;">
-
-    <div>
-      <% if @project.errors.any? %>
-        <% @project.errors.full_messages.each do |type| %>
-          <ul style="color: white">
-            <li><%= type %></li>
-          </ul>
-        <% end %>
-      <% end %>
-    </div>
+  <div style="width: 400px; border: 2px solid gray; padding: 10px; border-radius: 20px; height: auto;">
 
     <%= form_with model: project, local: true do |form| %>
 
       <div style="color: white">
         <%= form.label :name %><br>
-        <%= form.text_field :name %>
+        <%= form.text_field :name, required: true %>
       </div>
       <br>
       <div style="color: white">
@@ -39,10 +29,10 @@
         <%= form.select :status, Project.statuses.keys.map { |key| [key.humanize, key]} %>
       </div>
       <br>
-      <div style="color: white">
+      <div style="color: white; height: 100px; overflow-y: auto;">
         <%= form.label :developers %>
         <%= form.collection_check_boxes :developer_ids, @developers, :id, :name do |b| %>
-          <div style="color: white">
+          <div style="color: white;">
             <%= b.check_box %>
             <%= b.label %>
           </div>
@@ -56,5 +46,15 @@
       <% end %>
 
     <% end %>
+    <div>
+      <% if @project.errors.any? %>
+        <% @project.errors.full_messages.each do |type| %>
+          <ul style="color: white; list-style: none;">
+            <li><%= type %></li>
+          </ul>
+        <% end %>
+      <% end %>
+    </div>
   </div>
+
 </div>

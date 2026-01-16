@@ -10,8 +10,7 @@ class TasksController < ApplicationController
     @tasks = @project.tasks
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @task = @project.tasks.new
@@ -28,8 +27,7 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @task.update(task_params)

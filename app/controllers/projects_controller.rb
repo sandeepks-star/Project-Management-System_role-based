@@ -58,7 +58,6 @@ class ProjectsController < ApplicationController
   end
 
   def check_developers_exists?
-    byebug
     dev_ids = params.dig(:project, :developer_ids)
 
     if dev_ids.blank?
@@ -66,7 +65,6 @@ class ProjectsController < ApplicationController
       redirect_to new_project_path
     else
       @developers = Developer.where(id: dev_ids)
-      byebug
       @developers.each do |dev|
         if Developer.find_by(id: dev).blank?
           flash[:alert] = "Requested developer does not exits"
