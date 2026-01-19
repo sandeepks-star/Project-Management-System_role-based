@@ -1,19 +1,17 @@
 class Project < ApplicationRecord
-  has_many_attached :avatars
-
-  after_commit :send_email_to_developers
-  belongs_to :manager, class_name: "User", foreign_key: "user_id"
-  validate :all_tasks_status_completed, if: :status_changed?
-
-  has_and_belongs_to_many :developers, class_name: "User", foreign_key: "project_id", join_table: "projects_users", association_foreign_key: "user_id"
-
-  has_many :tasks, dependent: :destroy
-
   enum :status, { pending: 0, in_progress: 1, completed: 2 }
+
+  belongs_to :manager, class_name: "User", foreign_key: "user_id"
+  has_many :tasks, dependent: :destroy
+  has_many_attached :avatars
+  has_and_belongs_to_many :developers, class_name: "User", foreign_key: "project_id", join_table: "projects_users", association_foreign_key: "user_id"
 
   validates :name, presence: true, uniqueness: true
   validates :start_date, presence: true
+  validate :all_tasks_status_completed, if: :status_changed?
   validate :end_date_must_be_after_start_date
+
+  after_commit :send_email_to_developers
 
   private
 
@@ -28,8 +26,6 @@ class Project < ApplicationRecord
   def send_email_to_developers
     developers.each do |developer|
       SendEmailsJob.perform_later(developer, self)
-
-      EndDateReminderMailJob.set(wait_until: end_date.beginning_of_day).perform_later(developer, self)
     end
   end
 

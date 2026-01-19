@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   
   # Defines the root path route ("/")
@@ -16,6 +18,8 @@ Rails.application.routes.draw do
   resources :projects do
     resources :tasks
   end
+
+  mount Sidekiq::Web => '/sidekiq'
 
   # if Rails.env.development?
   #   mount LetterOpenerWeb::Engine, at: "/letter_opener"

@@ -1,8 +1,8 @@
 class AuthenticationController < ApplicationController
   skip_before_action :authenticate_request, only: [ :new, :login ]
   skip_before_action :if_current_user_is_nil
-  def new
-  end
+
+  def new; end
 
   def login
     @user = User.find_by(email: params[:email])
