@@ -20,6 +20,11 @@
       </div>
       <br>
       <div>
+        <%= form.label :avatars %>
+        <%= form.file_field :avatars, multiple: true %>
+      </div>
+      <br>
+      <div>
         <%= form.label :status %>
         <%= form.select :status, ["Pending", "In-Progress", "Completed"] %>
       </div>

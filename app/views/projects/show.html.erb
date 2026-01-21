@@ -37,6 +37,19 @@
   <% else %>
     <p>No developers assigned to this project.</p>
   <% end %>
+  <hr>
+
+  <h3>Images</h3>
+  <% if @project.avatars.attached? %>
+
+  <ul>
+    <% @project.avatars.each do |image| %>
+      <li>
+        <%= image_tag image.variant(resize_to_limit: [200, 200]) if image.representable? %>
+      </li>
+    <% end %>
+  </ul>
+  <% end %>
 
   <hr>
 
