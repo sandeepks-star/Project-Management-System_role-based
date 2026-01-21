@@ -24,6 +24,15 @@
     </div>
 
     <div style="margin-top: 20px">
+      <div>
+        <%= form_with(url: projects_path, method: :get, local: true) do |form| %>
+          <div style="color: white">
+            <%= form.label :status, "Filter by Status" %>
+            <%= form.select :status, Project.statuses.keys.map { |key| [key.humanize, key]}, onchange: 'this.form.submit();' %>
+          </div>
+          <%= form.submit "Filter" %>
+        <% end %>
+    </div>
       <table border="1" cellpadding="8" cellspacing="0">
 
         <tr>
