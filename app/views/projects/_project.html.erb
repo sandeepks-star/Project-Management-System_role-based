@@ -42,10 +42,10 @@
       <div style="color: white">
         <%= form.label :developers %>
         <%= form.collection_check_boxes :developer_ids, @developers, :id, :name do |b| %>
-        <div style="color: white">
-          <%= b.check_box %>
-          <%= b.label %>
-        </div>
+          <div style="color: white">
+            <%= b.check_box %>
+            <%= b.label %>
+          </div>
         <% end %>
       </div>
 
