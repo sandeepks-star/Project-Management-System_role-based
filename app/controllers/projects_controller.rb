@@ -6,7 +6,8 @@ class ProjectsController < ApplicationController
   before_action :check_developers_exists?, only: [ :create ]
 
   def index
-    @projects = @current_user.projects
+    @projects = @current_user.all_unscoped_projects
+    @projects = @projects.filter_by_status(params[:status]) if params[:status].present?
   end
 
   def show

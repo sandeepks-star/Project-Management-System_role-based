@@ -13,9 +13,6 @@ Rails.application.routes.draw do
   get "/signup", to: "users#new", as: :users
   post "/signup", to: "users#create"
 
-  resources :managers
-  resources :developers
-
   resources :projects do
     resources :tasks
   end

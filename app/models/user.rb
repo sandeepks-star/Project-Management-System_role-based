@@ -14,6 +14,10 @@ class User < ApplicationRecord
             presence: true,
             format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}\z/, message: "must be at least 8 characters long and include atleast one number, one letter and one speacial character." }
 
+  def all_unscoped_projects
+    projects.unscoped.all
+  end
+
   def self.first_user
     User.first
   end

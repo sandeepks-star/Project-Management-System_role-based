@@ -13,6 +13,18 @@ class Project < ApplicationRecord
 
   after_commit :send_email_to_developers
 
+  default_scope -> {where(status: "pending")}
+  scope :all_not_pending_projects, -> {where.not(status: 'pending')}
+  scope :filter_by_status, -> (status) {where(status: status)}
+
+  # def self.filter_by_status(status)
+  #   where(status: status)
+  # end
+
+  # scope :all_in_progress_projects, -> {where(status: 'in_progress')}
+
+  # scope :all_completed_projects, -> {where(status: 'completed')}
+
   private
 
   def end_date_must_be_after_start_date
