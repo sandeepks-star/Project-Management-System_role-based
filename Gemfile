@@ -61,9 +61,9 @@ group :development, :test do
 
   gem "rubocop", require: false
 
-  gem "launchy", group: :development
-
   gem 'sidekiq'
+
+  gem 'whenever', require: false
 
   # gem "letter_opener"
 
