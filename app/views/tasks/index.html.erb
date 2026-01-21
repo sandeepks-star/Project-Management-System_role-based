@@ -29,8 +29,7 @@
         <th>Name</th>
         <th>Priority</th>
         <th>Status</th>
-        <th>Show</th>
-        <th>Delete</th>
+        <th></th>
       </tr>
 
       <% @tasks.each do |task| %>
@@ -41,11 +40,10 @@
           <td><%= task.status %></td>
 
           <td>
-            <%= link_to "Show",
-                  project_task_path(@project, task) %>
-          </td>
-
-          <td>
+            <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
+              <%= link_to "Show", project_task_path(@project, task) %>
+            </button>
+            <hr>
             <% if current_user.is_a?(Manager) %>
               <%= button_to "Delete",
                     project_task_path(@project, task),
@@ -53,7 +51,6 @@
                     data: { confirm: "Are you sure?" } %>
             <% end %>
           </td>
-
         </tr>
       <% end %>
 

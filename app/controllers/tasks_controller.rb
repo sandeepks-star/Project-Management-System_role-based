@@ -1,8 +1,10 @@
 class TasksController < ApplicationController
-	before_action :authorize_manager, except: [:index, :show]
+  include AllDevelopers
+
+  before_action :authorize_manager, except: [ :index, :show ]
   before_action :set_project
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
-  before_action :check_developers_exists, only: [:create, :update]
+  before_action :set_task, only: [ :show, :edit, :update, :destroy ]
+  before_action :show_all_developers,
 
   def index
     @tasks = @project.tasks
@@ -13,7 +15,6 @@ class TasksController < ApplicationController
 
   def new
     @task = @project.tasks.new
-    @developers = Developer.all
   end
 
   def create
@@ -23,13 +24,11 @@ class TasksController < ApplicationController
       @task.developer_ids = params[:task][:developer_ids]
       redirect_to project_task_path(@project, @task)
     else
-      @developers = Developer.all
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @developers = Developer.all
   end
 
   def update
@@ -37,7 +36,6 @@ class TasksController < ApplicationController
       @task.developer_ids = params[:task][:developer_ids]
       redirect_to project_task_path(@project, @task)
     else
-      @developers = Developer.all
       render :edit, status: :unprocessable_entity
     end
   end
@@ -55,18 +53,19 @@ class TasksController < ApplicationController
 
   def set_task
     @task = @project.tasks.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to project_tasks_path, alert: "Requested task does not exist"
   end
 
   def task_params
     params.require(:task).permit(:name, :description, :status, :priority, developer_ids: [])
   end
 
-  def check_developers_exists
-    dev_ids = params[:task][:developer_ids]
-
-    if dev_ids.blank?
-      redirect_to new_project_task_path(@project),
-        alert: "Please select at least one developer"
+  def check_developers_exists?
+    dev_ids = params[:project][:developer_ids]
+    if dev_ids.present?
+      @developers = Developer.where(id: dev_ids)
+      redirect_to new_project_path unless @developers.any?
     end
   end
 end

@@ -20,7 +20,7 @@
     <div style="display: flex; justify-content: space-around;">
       <div style="align-items: center; width: 500px;">
 
-      <h2 style="color: white">All <%= @project.project_name %>'s Tasks</h2>
+      <h2 style="color: white">All <%= @project.name %>'s Tasks</h2>
 
       <table border="1" cellpadding="8" cellspacing="0">
 
@@ -29,8 +29,7 @@
           <th style="color: white; background-color: #333333">Name</th>
           <th style="color: white; background-color: #333333">Priority</th>
           <th style="color: white; background-color: #333333">Status</th>
-          <th style="color: white; background-color: #333333">Show</th>
-          <th style="color: white; background-color: #333333">Delete</th>
+          <th style="color: white; background-color: #333333">Buttons</th>
         </tr>
 
         <% @tasks.each do |task| %>
@@ -41,19 +40,22 @@
             <td style="color: white; background-color: ##2C3E50"><%= task.status %></td>
 
             <td style="color: white; background-color: ##2C3E50">
-              <%= link_to "Show",
-                    project_task_path(@project, task), style: "text-decoration: none; color: white; border: 1px solid white; border-radius: 5px" %>
-            </td style="color: white; background-color: ##2C3E50">
-
-            <td style="color: white; background-color: ##2C3E50">
+              <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
+                <%= link_to "Show", project_task_path(@project, task)%>
+              </button>
+              <hr>
               <% if current_user.is_a?(Manager) %>
                 <%= button_to "Delete",
-                      project_task_path(@project, task),
+                      project_path(@project),
                       method: :delete,
-                      data: { confirm: "Are you sure?" } %>
+                      data: { confirm: "Are you sure?" }
+                %>
+                <hr>
+                <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
+                  <%= link_to "Edit", edit_project_task_path(@project, task)%>
+                </button>
               <% end %>
-            </td>
-
+            </td style="color: white; background-color: ##2C3E50">
           </tr>
         <% end %>
 
@@ -67,7 +69,7 @@
 
       <p style="color: white">
         <strong>Project Name:</strong>
-        <%= @project.project_name %>
+        <%= @project.name %>
       </p>
 
       <p style="color: white">

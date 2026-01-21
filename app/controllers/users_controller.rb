@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authorize_request, only: [:new, :create]
+  skip_before_action :authenticate_request, only: [ :new, :create ]
 
   def new
     @user = User.new
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     if @user.save
       token = JwtService.encode(user_id: @user.id)
-      session[:token] = token 
+      session[:token] = token
 
       redirect_to projects_path
     else
