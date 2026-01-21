@@ -14,7 +14,8 @@ class UsersController < ApplicationController
 
       redirect_to projects_path
     else
-      render :new
+      flash.now[:alert] = "Invalid email or password"
+      render :new, status: :unprocessable_entity
     end
   end
 

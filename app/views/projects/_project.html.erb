@@ -1,45 +1,59 @@
-<div style="border: 2px solid black; height: 100vh; display: flex; justify-content: center; align-items: center;">
+<div style="display: flex; justify-content: center; align-items: center;">
 
-  <div style="width: 300px; border: 2px solid black; padding: 20px; border-radius: 20px;">
+  <div style="width: 300px; border: 2px solid gray; padding: 20px; border-radius: 20px;">
+
+    <div>
+      <% if @project.errors.any? %>
+        <% @project.errors.full_messages.each do |type| %>
+          <ul style="color: white">
+            <li><%= type %></li>
+          </ul>
+        <% end %>
+      <% end %>
+    </div>
 
     <%= form_with model: project, local: true do |form| %>
 
-      <div>
+      <div style="color: white">
         <%= form.label :project_name %><br>
         <%= form.text_field :project_name %>
       </div>
       <br>
-      <div>
+      <div style="color: white">
         <%= form.label :start_date %><br>
         <%= form.date_field :start_date %>
       </div>
       <br>
-      <div>
+      <div style="color: white">
         <%= form.label :end_date %><br>
         <%= form.date_field :end_date %>
       </div>
       <br>
-      <div>
-        <%= form.label :avatars %>
+      <div style="color: white">
+        <%= form.label :project_uploads %>
         <%= form.file_field :avatars, multiple: true %>
       </div>
       <br>
-      <div>
+      <div style="color: white">
         <%= form.label :status %>
         <%= form.select :status, ["Pending", "In-Progress", "Completed"] %>
       </div>
       <br>
-      <div>
+      <div style="color: white">
         <%= form.label :developers %>
         <%= form.collection_check_boxes :developer_ids, @developers, :id, :name do |b| %>
-        <div>
+        <div style="color: white">
           <%= b.check_box %>
           <%= b.label %>
         </div>
         <% end %>
       </div>
 
-      <%= form.submit "Create" %>
+      <% if @project.persisted? %>
+        <%= form.submit "Update Project", style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
+      <% else %>
+        <%= form.submit "Create Project", style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
+      <% end %>
 
     <% end %>
   </div>

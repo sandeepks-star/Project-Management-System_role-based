@@ -1,8 +1,20 @@
 <div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
 
+
   <div style="max-width: 100%; border: 2px solid black; padding: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 20px;">
 
     <h1>Login</h1>
+
+    <div>
+      <% if flash.now[:alert].present? %>
+        <% flash.each do |type, message| %>
+          <%= type %>
+          <%= message %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <br>
 
     <%= form_with url: login_path, data: {turbo: false} do |form| %>
 

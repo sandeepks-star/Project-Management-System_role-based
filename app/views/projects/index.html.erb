@@ -1,62 +1,66 @@
-<div style="padding: 15px; margin: 15px">
-  <div style="display: flex; align-items: center; justify-content: space-between">
-    
-    <div>
-    	<h1>Welcome, <%= @current_user.name %></h1>
-      <h2>All projects</h2>
+<div style="background-image: linear-gradient(to bottom, #1a1a2e, #0f3460); height: 100vh; width: 100vw">
+
+  <div style="padding: 15px; margin: 15px; ">
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+
+      <div>
+      	<h1 style="color: white;">Welcome, <%= @current_user.name %></h1>
+        <h2 style="color: white;">All projects</h2>
+      </div>
+
+      <div style="display: flex; gap: 10px">
+
+        <% if current_user.is_a?(Manager) %>
+          <%= link_to "Create New Project", new_project_path, style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
+        <% end %>
+
+        <%= button_to "Logout",
+              logout_path,
+              method: :delete,
+              data: { confirm: "Are you sure?" }, style: "border: 1px solid gray; border-radius: 5px; background-color: red; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
+      </div>
+
     </div>
 
-    <div style="display: flex; gap: 10px">
+    <div style="margin-top: 20px">
+      <table border="1" cellpadding="8" cellspacing="0">
 
-      <% if current_user.is_a?(Manager) %>
-        <%= link_to "Create New Project", new_project_path %>
-      <% end %>
-
-      <%= button_to "Logout",
-            logout_path,
-            method: :delete,
-            data: { confirm: "Are you sure?" } %>
-    </div>
-
-  </div>
-
-  <div style="margin-top: 20px">
-    <table border="1" cellpadding="8" cellspacing="0">
-
-      <tr>
-        <th>Project Id</th>
-        <th>Project Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Status</th>
-        <th></th>
-        <th></th>
-      </tr>
-
-      <% @projects.each do |project| %>
         <tr>
-          <td><%= project.id %></td>
-          <td><%= project.project_name %></td>
-          <td><%= project.start_date %></td>
-          <td><%= project.end_date %></td>
-          <td><%= project.status %></td>
-
-          <td>
-            <%= link_to "Show", project_path(project) %>
-          </td>
-
-          <td>
-            <% if current_user.is_a?(Manager) %>
-              <%= button_to "Delete",
-                    project_path(project),
-                    method: :delete,
-                    data: { confirm: "Are you sure?" } %>
-            <% end %>
-          </td>
-
+          <th style="color: white; background-color: #333333">Project Id</th>
+          <th style="color: white; background-color: #333333">Project Name</th>
+          <th style="color: white; background-color: #333333">Start Date</th>
+          <th style="color: white; background-color: #333333">End Date</th>
+          <th style="color: white; background-color: #333333">Status</th>
+          <th style="color: white; background-color: #333333">Show</th>
+          <th style="color: white; background-color: #333333">Delete</th>
         </tr>
-      <% end %>
 
-    </table>
+        <% @projects.each do |project| %>
+          <tr>
+            <td style="color: white; background-color: ##2C3E50"><%= project.id %></td>
+            <td style="color: white; background-color: ##2C3E50"><%= project.project_name %></td>
+            <td style="color: white; background-color: ##2C3E50"><%= project.start_date %></td>
+            <td style="color: white; background-color: ##2C3E50"><%= project.end_date %></td>
+            <td style="color: white; background-color: ##2C3E50"><%= project.status %></td>
+
+            <td style="color: white; background-color: ##2C3E50; text-decoration: none;">
+              <%= link_to "Show", project_path(project), style: "text-decoration: none; color: white; border: 1px solid white; border-radius: 5px" %>
+            </td>
+
+            <td style="color: white; background-color: ##2C3E50">
+              <% if current_user.is_a?(Manager) %>
+                <%= button_to "Delete",
+                      project_path(project),
+                      method: :delete,
+                      data: { confirm: "Are you sure?" } %>
+              <% end %>
+            </td>
+
+          </tr>
+        <% end %>
+
+      </table>
+    </div>
   </div>
 </div>

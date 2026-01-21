@@ -5,7 +5,6 @@ class TasksController < ApplicationController
   before_action :check_developers_exists, only: [:create, :update]
 
   def index
-  	 @project = Project.find(params[:project_id])
     @tasks = @project.tasks
   end
 
