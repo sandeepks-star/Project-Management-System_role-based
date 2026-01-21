@@ -63,7 +63,13 @@ group :development, :test do
 
   gem 'sidekiq'
 
+  gem 'sidekiq-cron'
+
   gem 'whenever', require: false
+
+  gem 'bullet'
+
+  gem 'rspec-rails'
 
   # gem "letter_opener"
 
@@ -79,4 +85,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'shoulda-matchers'
 end
