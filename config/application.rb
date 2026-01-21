@@ -26,6 +26,6 @@ module ProjectManagementSystemRoleBased
     config.session_store :cookie_store, key: "_jwt_app_session"
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
-
+    config.active_job.queue_adapter = :sidekiq
   end
 end

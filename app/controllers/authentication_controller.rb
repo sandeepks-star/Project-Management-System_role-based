@@ -9,7 +9,6 @@ class AuthenticationController < ApplicationController
 
     if @user&.authenticate(params[:password])
       token = JwtService.encode(user_id: @user.id)
-      byebug
       session[:token] = token
 
       redirect_to projects_path
