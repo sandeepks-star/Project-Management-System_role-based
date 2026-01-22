@@ -1,9 +1,14 @@
 require './spec/rails_helper'
 
 RSpec.describe Task, type: :model do
-  describe "enums" do
-    it {should define_enum_for(:status).with_values([:pending, :in_progress, :completed])}
-    it {should define_enum_for(:priority).with_values([:low, :medium, :high])}
+  describe "status and priority enums" do
+    it do
+      should define_enum_for(:status).with_values(pending:0, in_progress:1, completed:2).backed_by_column_of_type(:integer)
+
+      should define_enum_for(:priority).with_values(low:0, medium:1, high:2).backed_by_column_of_type(:integer)
+    end
+
+
   end
 
   describe "associations" do

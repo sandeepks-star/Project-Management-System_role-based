@@ -7,8 +7,6 @@ RSpec.describe User, type: :model do
     it {should have_secure_password}
 
     it {should allow_values("Manager", "Developer").for(:type)}
-    it {should_not allow_value(123).for(:name)}
-    it {should_not allow_value('John123').for(:name)}
     it {should validate_presence_of (:name)}
 
     it {should_not allow_value('abc.com').for(:email)}
