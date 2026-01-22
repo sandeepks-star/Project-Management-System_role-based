@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   # scope :first_user, -> {User.first}
 
-  validates :name, presence: true, format: { with: /\A[a-zA-Z\s]+\z/ }
+  validates :name, presence: true
 
   validates :email,
             presence: true,
