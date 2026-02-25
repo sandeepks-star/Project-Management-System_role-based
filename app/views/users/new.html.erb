@@ -1,68 +1,86 @@
-<div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+<div style="
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+">
 
-  <div style="max-width: 100%; width: 300px; border: 2px solid black; padding: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 20px;">
+  <div style="
+    width: 380px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  ">
 
-    <div>
+    <h1 style="margin-bottom: 20px; color: #333;">Create Account ✨</h1>
+
+    <!-- Error Messages -->
+    <div style="width: 100%; margin-bottom: 15px;">
       <% if @user.errors.any? %>
-        <% @user.errors.full_messages.each do |type| %>
-          <ul>
-            <li><%= type %></li>
-          </ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <div style="
+            background-color: #ffe6e6;
+            color: #cc0000;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 5px;
+          ">
+            <%= message %>
+          </div>
         <% end %>
       <% end %>
     </div>
 
-    <h1>Sign Up</h1>
-
     <%= form_with model: @user, local: true do |form| %>
 
-      <div style="margin-bottom: 10px;">
-        <%= form.label :name, "Name: " %>
-        <br>
-        <%= form.text_field :name %>
+      <!-- Name -->
+      <div style="margin-bottom: 20px; width: 100%;">
+        <%= form.label :name, "Name", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.text_field :name, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
-      <br>
-
-      <div style="margin-bottom: 10px;">
-        <%= form.label :email, "Email: " %>
-        <br>
-        <%= form.email_field :email %>
+      <!-- Email -->
+      <div style="margin-bottom: 20px; width: 100%;">
+        <%= form.label :email, "Email", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.email_field :email, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
-      <br>
-
-      <div style="margin-bottom: 10px;">
-        <%= form.label :password, "Password: " %>
-        <br>
-        <%= form.password_field :password %>
+      <!-- Password -->
+      <div style="margin-bottom: 20px; width: 100%;">
+        <%= form.label :password, "Password", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.password_field :password, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
-      <br>
-
-      <div style="margin-bottom: 10px;">
-        <%= form.label :type, "Type: " %>
-
-       <%#  <%= form.radio_button :type, "Manager" %>
-       <%# <%= form.label :type_manager, "Manager" %>
-       <%# <%= form.radio_button :type, "Developer" %>
-       <%# <%= form.label :type_developer, "Developer" %>
-
-        <%= form.select :type, [
-          "Manager",
-          "Developer"
-          ] %>
+      <!-- Type -->
+      <div style="margin-bottom: 25px; width: 100%;">
+        <%= form.label :type, "Role", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.select :type, ["Manager", "Developer"],
+            {},
+            style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
+      <!-- Submit -->
+      <div style="width: 100%;">
+        <%= form.submit "Sign Up", style: "width: 100%; padding: 12px; background-color: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" %>
+      </div>
 
-      <%= form.submit "Sign-Up" %>
-
-      <div>
-        <br>
-        <%= link_to "Click Here", new_login_path %>
-        to Login
+      <!-- Login Link -->
+      <div style="margin-top: 20px; font-size: 14px; text-align: center;">
+        <p style="color: #555;">
+          Already have an account?
+          <%= link_to "Login", new_login_path, style: "color: #667eea; font-weight: bold; text-decoration: none;" %>
+        </p>
       </div>
 
     <% end %>
+
   </div>
 </div>

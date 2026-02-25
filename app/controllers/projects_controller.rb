@@ -6,12 +6,14 @@ class ProjectsController < ApplicationController
   before_action :check_developers_exists?, only: [ :create ]
 
   def index
-    @projects = @current_user.all_unscoped_projects
+    @projects = @current_user.projects
     @projects = @projects.filter_by_status(params[:status]) if params[:status].present?
+    @projects = @projects.order(created_at: :desc)
   end
 
   def show
     @tasks = @project.tasks
+    fresh_when @product
   end
 
   def new

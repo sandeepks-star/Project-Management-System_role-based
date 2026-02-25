@@ -1,60 +1,74 @@
-<div style="display: flex; justify-content: center; align-items: center; width: auto; height: auto;">
+<div style="max-width: 700px; margin: 0 auto; background: white; padding: 40px; border-radius: 18px; box-shadow: 0 20px 45px rgba(0,0,0,0.35);">
 
-  <div style="width: 400px; border: 2px solid gray; padding: 10px; border-radius: 20px; height: auto;">
+  <!-- Error Messages -->
+  <% if @project.errors.any? %>
+    <div style="background: #ffe6e6; padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+      <% @project.errors.full_messages.each do |message| %>
+        <div style="color: #cc0000; font-size: 14px;">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
-    <%= form_with model: project, local: true do |form| %>
+  <%= form_with model: project, local: true do |form| %>
 
-      <div style="color: white">
-        <%= form.label :name %><br>
-        <%= form.text_field :name, required: true %>
+    <!-- Name -->
+    <div style="margin-bottom: 20px;">
+      <%= form.label :name, style: "font-weight: bold;" %>
+      <%= form.text_field :name,
+            required: true,
+            style: "width: 100%; padding: 12px; margin-top: 6px; border-radius: 10px; border: 1px solid #ccc;" %>
+    </div>
+
+    <!-- Dates -->
+    <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+      <div style="flex: 1;">
+        <%= form.label :start_date, style: "font-weight: bold;" %>
+        <%= form.date_field :start_date,
+              style: "width: 100%; padding: 12px; margin-top: 6px; border-radius: 10px; border: 1px solid #ccc;" %>
       </div>
-      <br>
-      <div style="color: white">
-        <%= form.label :start_date %><br>
-        <%= form.date_field :start_date %>
+
+      <div style="flex: 1;">
+        <%= form.label :end_date, style: "font-weight: bold;" %>
+        <%= form.date_field :end_date,
+              style: "width: 100%; padding: 12px; margin-top: 6px; border-radius: 10px; border: 1px solid #ccc;" %>
       </div>
-      <br>
-      <div style="color: white">
-        <%= form.label :end_date %><br>
-        <%= form.date_field :end_date %>
-      </div>
-      <br>
-      <div style="color: white">
-        <%= form.label :project_uploads %>
-        <%= form.file_field :avatars, multiple: true %>
-      </div>
-      <br>
-      <div style="color: white">
-        <%= form.label :status %>
-        <%= form.select :status, Project.statuses.keys.map { |key| [key.humanize, key]} %>
-      </div>
-      <br>
-      <div style="color: white; height: 100px; overflow-y: auto;">
-        <%= form.label :developers %>
+    </div>
+
+    <!-- Status -->
+    <div style="margin-bottom: 20px;">
+      <%= form.label :status, style: "font-weight: bold;" %>
+      <%= form.select :status,
+            Project.statuses.keys.map { |key| [key.humanize, key] },
+            {},
+            style: "width: 100%; padding: 12px; margin-top: 6px; border-radius: 10px; border: 1px solid #ccc;" %>
+    </div>
+
+    <!-- File Upload -->
+    <div style="margin-bottom: 20px;">
+      <%= form.label :project_uploads, style: "font-weight: bold;" %>
+      <%= form.file_field :avatars, multiple: true, style: "margin-top: 6px;" %>
+    </div>
+
+    <!-- Developers -->
+    <div style="margin-bottom: 25px;">
+      <%= form.label :developers, style: "font-weight: bold;" %>
+
+      <div style="margin-top: 8px; padding: 12px; border: 1px solid #ddd; border-radius: 10px; max-height: 140px; overflow-y: auto;">
         <%= form.collection_check_boxes :developer_ids, @developers, :id, :name do |b| %>
-          <div style="color: white;">
+          <div style="margin-bottom: 6px;">
             <%= b.check_box %>
-            <%= b.label %>
+            <%= b.label style: "margin-left: 6px;" %>
           </div>
         <% end %>
       </div>
-
-      <% if @project.persisted? %>
-        <%= form.submit "Update Project", style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
-      <% else %>
-        <%= form.submit "Create Project", style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
-      <% end %>
-
-    <% end %>
-    <div>
-      <% if @project.errors.any? %>
-        <% @project.errors.full_messages.each do |type| %>
-          <ul style="color: white; list-style: none;">
-            <li><%= type %></li>
-          </ul>
-        <% end %>
-      <% end %>
     </div>
-  </div>
+
+    <!-- Submit -->
+    <%= form.submit @project.persisted? ? "Update Project" : "Create Project",
+          style: "width: 100%; padding: 14px; background: #4CAF50; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 15px;" %>
+
+  <% end %>
 
 </div>

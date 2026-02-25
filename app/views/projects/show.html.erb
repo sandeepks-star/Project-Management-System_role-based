@@ -1,122 +1,138 @@
-<div style="background-image: linear-gradient(to bottom, #1a1a2e, #0f3460); height: 100vh; width: 100%">
-  <div style="padding: 10px;">
+<div style="min-height: 100vh; width: 100%; background: linear-gradient(135deg, #1a1a2e, #0f3460); padding: 40px 20px; box-sizing: border-box; font-family: Arial, sans-serif;">
 
-    <div style="margin-top: 15px; display: flex; justify-content: space-around; background-color: #333333; padding: 10px; border-radius: 5px;">
-        <div>
-          <%= link_to "Back to Projects", projects_path, style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none "%>
-        </div>
-        <div>
-          <%= link_to "Edit Project", edit_project_path(@project.id), style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
-        </div>
-        <div>
-          <% if current_user.is_a?(Manager) %>
-            <%= link_to "Create New Task", new_project_task_path(@project), style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
-          <% end %>
-        </div>
+  <!-- Top Bar -->
+  <div style="max-width: 1200px; margin: 0 auto 30px auto; display: flex; justify-content: space-between; align-items: center;">
+
+    <h1 style="color: white; margin: 0;">📁 <%= @project.name %></h1>
+
+    <div style="display: flex; gap: 12px;">
+
+      <%= link_to "⬅ Back",
+            projects_path,
+            style: "background: #3498db; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
+
+      <%= link_to "✏ Edit",
+            edit_project_path(@project),
+            style: "background: #f39c12; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
+
+      <% if current_user.is_a?(Manager) %>
+        <%= link_to "➕ New Task",
+              new_project_task_path(@project),
+              style: "background: #4CAF50; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
+      <% end %>
+
     </div>
+  </div>
 
-    <hr>
+  <!-- Main Layout -->
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 30px; align-items: flex-start;">
 
-    <div style="display: flex; justify-content: space-around;">
-      <div style="align-items: center; width: 500px;">
+    <!-- TASK SECTION -->
+    <div style="flex: 2; background: white; padding: 25px; border-radius: 18px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); display: flex; flex-direction: column; max-height: 75vh;">
 
-      <h2 style="color: white">All <%= @project.name %>'s Tasks</h2>
+      <h2 style="margin-top: 0;">📝 Tasks</h2>
 
-      <table border="1" cellpadding="8" cellspacing="0">
+      <div style="overflow-y: auto; flex: 1; margin-top: 15px;">
 
-        <tr>
-          <th style="color: white; background-color: #333333">Task Id</th>
-          <th style="color: white; background-color: #333333">Name</th>
-          <th style="color: white; background-color: #333333">Priority</th>
-          <th style="color: white; background-color: #333333">Status</th>
-          <th style="color: white; background-color: #333333">Buttons</th>
-        </tr>
+        <table style="width: 100%; border-collapse: collapse;">
 
-        <% @tasks.each do |task| %>
-          <tr>
-            <td style="color: white; background-color: ##2C3E50"><%= task.id %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= task.name %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= task.priority %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= task.status %></td>
+          <thead>
+            <tr style="background: #2c3e50; color: white;">
+              <th style="padding: 12px;">ID</th>
+              <th style="padding: 12px;">Name</th>
+              <th style="padding: 12px;">Priority</th>
+              <th style="padding: 12px;">Status</th>
+              <th style="padding: 12px;">Actions</th>
+            </tr>
+          </thead>
 
-            <td style="color: white; background-color: ##2C3E50">
-              <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
-                <%= link_to "Show", project_task_path(@project, task)%>
-              </button>
-              <hr>
-              <% if current_user.is_a?(Manager) %>
-                <%= button_to "Delete",
-                      project_path(@project),
-                      method: :delete,
-                      data: { confirm: "Are you sure?" }
-                %>
-                <hr>
-                <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
-                  <%= link_to "Edit", edit_project_task_path(@project, task)%>
-                </button>
+          <tbody>
+
+            <% if @tasks.present? %>
+
+              <% @tasks.each do |task| %>
+                <tr style="border-bottom: 1px solid #ddd; text-align: center;">
+
+                  <td style="padding: 8px;"><%= task.id %></td>
+                  <td style="padding: 8px;"><%= task.name %></td>
+                  <td style="padding: 8px;"><%= task.priority.humanize %></td>
+                  <td style="padding: 8px;"><%= task.status.humanize %></td>
+
+                  <td style="padding: 8px; display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;">
+
+                    <!-- Show -->
+                    <%= link_to "Show",
+                          project_task_path(@project, task),
+                          style: "background: #3498db; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; text-decoration: none;" %>
+
+                    <% if current_user.is_a?(Manager) %>
+
+                      <!-- Edit -->
+                      <%= link_to "Edit",
+                            edit_project_task_path(@project, task),
+                            style: "background: #f39c12; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; text-decoration: none;" %>
+
+                      <!-- Delete -->
+                      <%= button_to "Delete",
+                            project_task_path(@project, task),
+                            method: :delete,
+                            data: { confirm: "Are you sure?" },
+                            style: "background: #e74c3c; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; border: none;" %>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
               <% end %>
-            </td style="color: white; background-color: ##2C3E50">
-          </tr>
-        <% end %>
 
-      </table>
+            <% else %>
+
+              <tr>
+                <td colspan="5" style="padding: 20px; text-align: center; color: gray; font-weight: bold;">
+                  🚫 No Tasks Found
+                </td>
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
 
-    <%# div for project details %>
-    <div style="padding-left:10px; margin-top: 10px; width: 400px; border: 1px solid grey; border-radius: 10px;">
+    <!-- PROJECT DETAILS -->
+    <div style="flex: 1; background: white; padding: 25px; border-radius: 18px; box-shadow: 0 15px 35px rgba(0,0,0,0.25);">
 
-      <h2 style="color: white">Project Details</h2>
+      <h2 style="margin-top: 0;">📊 Project Details</h2>
 
-      <p style="color: white">
-        <strong>Project Name:</strong>
-        <%= @project.name %>
-      </p>
-
-      <p style="color: white">
-        <strong>Start Date:</strong>
-        <%= @project.start_date %>
-      </p>
-
-      <p style="color: white">
-        <strong>End Date:</strong>
-        <%= @project.end_date %>
-      </p>
-
-      <p style="color: white">
-        <strong>Status:</strong>
-        <%= @project.status %>
-      </p>
+      <p><strong>Name:</strong> <%= @project.name %></p>
+      <p><strong>Start Date:</strong> <%= @project.start_date %></p>
+      <p><strong>End Date:</strong> <%= @project.end_date %></p>
+      <p><strong>Status:</strong> <%= @project.status.humanize %></p>
 
       <hr>
 
-      <h3 style="color: white">Assigned Developers</h3>
+      <h3>👨‍💻 Assigned Developers</h3>
 
       <% if @project.developers.any? %>
-        <ul style="color: white">
+        <ul style="padding-left: 18px;">
           <% @project.developers.each do |developer| %>
-            <li>
-              <%= developer.name %> (<%= developer.email %>)
+            <li style="margin-bottom: 8px;">
+              <strong><%= developer.name %></strong><br>
+              <span style="color: gray; font-size: 13px;"><%= developer.email %></span>
             </li>
           <% end %>
         </ul>
       <% else %>
-        <p style="color: white">No developers assigned to this project.</p>
+        <p style="color: gray;">No developers assigned.</p>
       <% end %>
-      <hr>
 
-      <h3 style="color: white">Images</h3>
-      <% if @project.avatars.attached? %>
-        <ul style="color: white">
-          <% @project.avatars.each do |image| %>
-            <li>
-              <%= image_tag image.variant(resize_to_limit: [100,100]) %>
-              <p><%= link_to image.filename, rails_blob_path(image, disposition: "attachment"), style: "text-decoration: none; color: yellow" %></p>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
     </div>
 
   </div>
+
 </div>

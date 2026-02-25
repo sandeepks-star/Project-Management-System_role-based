@@ -13,7 +13,7 @@ class Project < ApplicationRecord
 
   after_commit :send_email_to_developers
 
-  default_scope -> {where(status: "pending")}
+  # default_scope -> {where(status: "pending")}
   scope :all_not_pending_projects, -> {where.not(status: 'pending')}
   scope :filter_by_status, -> (status) {where(status: status)}
 

@@ -1,41 +1,43 @@
-<div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+<div style="height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #667eea, #764ba2); font-family: Arial, sans-serif;">
 
+  <div style="width: 350px; background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center;">
 
-  <div style="max-width: 100%; border: 2px solid black; padding: 20px; display: flex; flex-direction: column; align-items: center; border-radius: 20px;">
+    <h1 style="margin-bottom: 20px; color: #333;">Welcome Back 👋</h1>
 
-    <h1>Login</h1>
-
-    <div>
+    <div style="width: 100%; margin-bottom: 15px;">
       <% if flash.now[:alert].present? %>
         <% flash.each do |type, message| %>
-          <%= type %>
-          <%= message %>
+          <div style="background-color: #ffe6e6; color: #cc0000; padding: 10px; border-radius: 8px; font-size: 14px;">
+            <%= message %>
+          </div>
         <% end %>
       <% end %>
     </div>
 
-    <br>
-
     <%= form_with url: login_path, data: {turbo: false} do |form| %>
 
-      <div style="margin-bottom: 10px;">
-        <%= form.label :email, "Email: " %>
-        <br>
-        <%= form.email_field :email %>
-      </div>
-      <br>
-      <div style="margin-bottom: 10px;">
-        <%= form.label :password, "Password: " %>
-        <br>
-        <%= form.password_field :password %>
+      <div style="margin-bottom: 20px; width: 100%;">
+        <%= form.label :email, "Email", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.email_field :email, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
-      <%= form.submit "Login" %>
+      <div style="margin-bottom: 25px; width: 100%;">
+        <%= form.label :password, "Password", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.password_field :password, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+      </div>
 
-      <div >
-        <p>Don't have an account <%= link_to "Click Here", users_path %> </p>
+      <div style="width: 100%;">
+        <%= form.submit "Login", style: "width: 100%; padding: 12px; background-color: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;" %>
+      </div>
+
+      <div style="margin-top: 20px; font-size: 14px; text-align: center;">
+        <p style="color: #555;">
+          Don't have an account? 
+          <%= link_to "Sign Up", users_path, style: "color: #667eea; font-weight: bold; text-decoration: none;" %>
+        </p>
       </div>
 
     <% end %>
+
   </div>
 </div>

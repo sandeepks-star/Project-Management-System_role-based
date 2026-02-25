@@ -1,78 +1,115 @@
-<div style="background-image: linear-gradient(to bottom, #1a1a2e, #0f3460); background-size: cover;">
+<div style="min-height: 100vh; width: 100vw; background: linear-gradient(135deg, #1a1a2e, #0f3460); padding: 30px; font-family: Arial, sans-serif; box-sizing: border-box;">
 
-  <div style="padding: 15px; margin: 15px; ">
+  <!-- Top Section -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
 
-    <div style="display: flex; align-items: center; justify-content: space-between">
-
-      <div>
-      	<h1 style="color: white;">Welcome, <%= @current_user&.name %></h1>
-        <h2 style="color: white;">All projects</h2>
-      </div>
-
-      <div style="display: flex; gap: 10px">
-
-        <% if current_user.is_a?(Manager) %>
-          <%= link_to "Create New Project", new_project_path, style: "border: 1px solid gray; border-radius: 5px; background-color: green; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
-        <% end %>
-
-        <%= button_to "Logout",
-              logout_path,
-              method: :delete,
-              data: { confirm: "Are you sure?" }, style: "border: 1px solid gray; border-radius: 5px; background-color: red; padding: 2px; margin: 2px; color: white; text-decoration: none " %>
-      </div>
-
+    <div>
+      <h1 style="color: white; margin: 0;">Welcome, <%= @current_user&.name %> 👋</h1>
+      <p style="color: #cccccc; margin-top: 5px;">Manage all your projects efficiently</p>
     </div>
 
-    <div style="margin-top: 20px">
-      <div>
-        <%= form_with(url: projects_path, method: :get, local: true) do |form| %>
-          <div style="color: white">
-            <%= form.label :status, "Filter by Status" %>
-            <%= form.select :status, Project.statuses.keys.map { |key| [key.humanize, key]}, onchange: 'this.form.submit();' %>
-          </div>
-          <%= form.submit "Filter" %>
-        <% end %>
-    </div>
-      <table border="1" cellpadding="8" cellspacing="0">
+    <div style="display: flex; gap: 15px; align-items: center;">
 
-        <tr>
-          <th style="color: white; background-color: #333333">Project Id</th>
-          <th style="color: white; background-color: #333333">Project Name</th>
-          <th style="color: white; background-color: #333333">Start Date</th>
-          <th style="color: white; background-color: #333333">End Date</th>
-          <th style="color: white; background-color: #333333">Status</th>
-          <th style="color: white; background-color: #333333">Buttons</th>
-          >
+      <% if current_user.is_a?(Manager) %>
+        <%= link_to "➕ New Project", new_project_path,
+          style: "background: #4CAF50; padding: 10px 18px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
+      <% end %>
+
+      <%= button_to "Logout",
+            logout_path,
+            method: :delete,
+            data: { confirm: "Are you sure?" },
+            style: "background: #e74c3c; padding: 10px 18px; border-radius: 8px; color: white; border: none; font-weight: bold;" %>
+
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin-bottom: 25px; backdrop-filter: blur(10px);">
+    <%= form_with(url: projects_path, method: :get, local: true) do |form| %>
+      <div style="display: flex; gap: 15px; align-items: center; color: white;">
+
+        <%= form.label :status, "Filter by Status:" %>
+
+        <%= form.select :status,
+              Project.statuses.keys.map { |key| [key.humanize, key] },
+              { selected: params[:status] },
+              style: "padding: 8px 12px; border-radius: 6px; border: none;" %>
+
+        <%= form.submit "Apply",
+              style: "padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer;" %>
+
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Projects Table -->
+  <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow-x: auto;">
+
+    <h2 style="margin-top: 0;">📁 All Projects</h2>
+
+    <table style="width: 100%; border-collapse: collapse;">
+
+      <thead>
+        <tr style="background: #2c3e50; color: white;">
+          <th style="padding: 12px;">ID</th>
+          <th style="padding: 12px;">Name</th>
+          <th style="padding: 12px;">Start Date</th>
+          <th style="padding: 12px;">End Date</th>
+          <th style="padding: 12px;">Status</th>
+          <th style="padding: 12px;">Actions</th>
         </tr>
+      </thead>
 
-        <% @projects&.each do |project| %>
-          <tr>
-            <td style="color: white; background-color: ##2C3E50"><%= project&.id %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= project&.name %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= project&.start_date %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= project&.end_date %></td>
-            <td style="color: white; background-color: ##2C3E50"><%= project&.status %></td>
+      <tbody>
 
-            <td style="color: white; background-color: ##2C3E50; text-decoration: none;">
-              <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
-                <%= link_to "Show", project_path(project)%>
-              </button>
-              <hr>
+        <% if @projects.present? %>
+
+          <% @projects.each do |project| %>
+            <tr style="border-bottom: 1px solid #ddd; text-align: center;">
+
+              <td style="padding: 10px;"><%= project.id %></td>
+              <td style="padding: 10px;"><%= project.name %></td>
+              <td style="padding: 10px;"><%= project.start_date %></td>
+              <td style="padding: 10px;"><%= project.end_date %></td>
+              <td style="padding: 10px; font-weight: bold;"><%= project.status.humanize %></td>
+
+              <td style="padding: 10px; display: flex; justify-content: center; gap: 8px;">
+
+                <%= link_to "Show", project_path(project),
+                    style: "background: #3498db; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;" %>
+
                 <% if current_user.is_a?(Manager) %>
+
+                  <%= link_to "Edit", edit_project_path(project),
+                      style: "background: #f39c12; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;" %>
+
                   <%= button_to "Delete",
                         project_path(project),
                         method: :delete,
-                        data: { confirm: "Are you sure?" } %>
-                  <hr>
-                  <button style="text-decoration: none; color: white; border: 1px solid white; border-radius: 5px">
-                    <%= link_to "Edit", edit_project_path(project)%>
-                  </button>
+                        data: { confirm: "Are you sure?" },
+                        style: "background: #e74c3c; color: white; padding: 6px 12px; border-radius: 6px; border: none;" %>
+
                 <% end %>
+
+              </td>
+
+            </tr>
+          <% end %>
+
+        <% else %>
+
+          <tr>
+            <td colspan="6" style="padding: 25px; text-align: center; font-weight: bold; color: gray;">
+              🚫 No Projects Found
             </td>
           </tr>
+
         <% end %>
 
-      </table>
-    </div>
+      </tbody>
+
+    </table>
   </div>
+
 </div>
