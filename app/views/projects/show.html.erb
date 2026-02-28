@@ -15,7 +15,7 @@
             edit_project_path(@project),
             style: "background: #f39c12; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
 
-      <% if current_user.is_a?(Manager) %>
+      <% if current_user.manager? %>
         <%= link_to "➕ New Task",
               new_project_task_path(@project),
               style: "background: #4CAF50; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
@@ -55,8 +55,8 @@
 
                   <td style="padding: 8px;"><%= task.id %></td>
                   <td style="padding: 8px;"><%= task.name %></td>
-                  <td style="padding: 8px;"><%= task.priority.humanize %></td>
-                  <td style="padding: 8px;"><%= task.status.humanize %></td>
+                  <td style="padding: 8px;"><%= task.priority&.humanize || "Unknown" %></td>
+                  <td style="padding: 8px;"><%= task.status&.humanize || "Unknown" %></td>
 
                   <td style="padding: 8px; display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;">
 
@@ -65,7 +65,7 @@
                           project_task_path(@project, task),
                           style: "background: #3498db; color: white; padding: 4px 8px; border-radius: 6px; font-size: 12px; text-decoration: none;" %>
 
-                    <% if current_user.is_a?(Manager) %>
+                    <% if current_user.manager? %>
 
                       <!-- Edit -->
                       <%= link_to "Edit",
@@ -112,7 +112,7 @@
       <p><strong>Name:</strong> <%= @project.name %></p>
       <p><strong>Start Date:</strong> <%= @project.start_date %></p>
       <p><strong>End Date:</strong> <%= @project.end_date %></p>
-      <p><strong>Status:</strong> <%= @project.status.humanize %></p>
+      <p><strong>Status:</strong> <%= @project.status&.humanize || "Unknown" %></p>
 
       <hr>
 

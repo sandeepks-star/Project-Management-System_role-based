@@ -3,7 +3,12 @@ class Task < ApplicationRecord
   enum :priority, { low: 0, medium: 1, high: 2 }
 
   belongs_to :project
-  has_and_belongs_to_many :developers, class_name: "Developer", foreign_key: "task_id", join_table: "tasks_users", association_foreign_key: "user_id"
+
+  has_and_belongs_to_many :developers,
+                        class_name: "User",
+                        join_table: "tasks_users",
+                        foreign_key: "task_id",
+                        association_foreign_key: "user_id"
 
   validates :name, presence: true
   validates :description, presence: true

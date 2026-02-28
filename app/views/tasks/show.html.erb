@@ -11,7 +11,7 @@
             project_path(@project),
             style: "background: #3498db; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
 
-      <% if current_user.is_a?(Manager) %>
+      <% if current_user.manager? %>
         <%= link_to "✏ Edit Task",
               edit_project_task_path(@project, @task),
               style: "background: #f39c12; padding: 8px 16px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
@@ -49,7 +49,7 @@
                 else '#2ecc71'
               end %>;
           color: white;">
-          <%= @task.priority.humanize %>
+          <%= @task.priority&.humanize || "Unknown" %>
         </span>
       </div>
 
@@ -68,7 +68,7 @@
                 else '#95a5a6'
               end %>;
           color: white;">
-          <%= @task.status.humanize %>
+          <%= @task.status&.humanize || "Unknown" %>
         </span>
       </div>
 
