@@ -4,19 +4,19 @@
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
 
     <div>
-      <h1 style="color: white; margin: 0;">Welcome, <%= @current_user&.name %> 👋</h1>
+      <h1 style="color: white; margin: 0;">Welcome, <%= current_user&.name %> 👋</h1>
       <p style="color: #cccccc; margin-top: 5px;">Manage all your projects efficiently</p>
     </div>
 
     <div style="display: flex; gap: 15px; align-items: center;">
 
-      <% if current_user.is_a?(Manager) %>
+      <% if current_user.manager? %>
         <%= link_to "➕ New Project", new_project_path,
           style: "background: #4CAF50; padding: 10px 18px; border-radius: 8px; color: white; text-decoration: none; font-weight: bold;" %>
       <% end %>
 
       <%= button_to "Logout",
-            logout_path,
+            destroy_user_session_path,
             method: :delete,
             data: { confirm: "Are you sure?" },
             style: "background: #e74c3c; padding: 10px 18px; border-radius: 8px; color: white; border: none; font-weight: bold;" %>
@@ -72,14 +72,14 @@
               <td style="padding: 10px;"><%= project.name %></td>
               <td style="padding: 10px;"><%= project.start_date %></td>
               <td style="padding: 10px;"><%= project.end_date %></td>
-              <td style="padding: 10px; font-weight: bold;"><%= project.status.humanize %></td>
+              <td style="padding: 10px; font-weight: bold;"><%= project.status&.humanize || "Unknown" %></td>
 
               <td style="padding: 10px; display: flex; justify-content: center; gap: 8px;">
 
                 <%= link_to "Show", project_path(project),
                     style: "background: #3498db; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;" %>
 
-                <% if current_user.is_a?(Manager) %>
+                <% if current_user.manager? %>
 
                   <%= link_to "Edit", edit_project_path(project),
                       style: "background: #f39c12; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;" %>

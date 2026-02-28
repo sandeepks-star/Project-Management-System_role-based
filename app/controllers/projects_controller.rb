@@ -2,18 +2,21 @@ class ProjectsController < ApplicationController
   include AllDevelopers
 
   before_action :set_project, except: [ :index, :new, :create ]
-  before_action :authorize_manager, only: [ :new, :create, :edit, :update, :destroy ]
-  before_action :check_developers_exists?, only: [ :create ]
+  before_action :authorize_manager!, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :check_developers_exists?, only: [ :create, :update ]
 
   def index
-    @projects = @current_user.projects
+    @projects = if current_user.manager?
+                  current_user.managed_projects
+                else
+                  current_user.projects
+                end
     @projects = @projects.filter_by_status(params[:status]) if params[:status].present?
     @projects = @projects.order(created_at: :desc)
   end
 
   def show
-    @tasks = @project.tasks
-    fresh_when @product
+    @tasks = @project.tasks.order(created_at: :desc)
   end
 
   def new
@@ -21,12 +24,12 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = @current_user.projects.new(project_params)
+    @project = current_user.managed_projects.new(project_params)
 
     if @project.save
-      @project.developer_ids = params.dig(:project, :developer_ids)
+      @project.developer_ids = project_developer_ids
 
-      redirect_to @project
+      redirect_to @project, notice: "Project created successfully"
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,8 +39,8 @@ class ProjectsController < ApplicationController
 
   def update
     if @project.update(project_params)
-      @project.developer_ids = params.dig(:project, :developer_ids)
-      redirect_to @project
+      @project.developer_ids = project_developer_ids
+      redirect_to @project, notice: "Project updated successfully"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -45,7 +48,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project.destroy
-    redirect_to projects_path
+    redirect_to projects_path, notice: "Project deleted successfully"
   end
 
   private
@@ -61,19 +64,20 @@ class ProjectsController < ApplicationController
   end
 
   def check_developers_exists?
-    dev_ids = params.dig(:project, :developer_ids)
+    dev_ids = project_developer_ids
 
     if dev_ids.blank?
-      flash[:alert] = "No developers selected"
-      redirect_to new_project_path
-    else
-      @developers = Developer.where(id: dev_ids)
-      @developers.each do |dev|
-        if Developer.find_by(id: dev).blank?
-          flash[:alert] = "Requested developer does not exits"
-          return
-        end
-      end
+      redirect_back fallback_location: projects_path, alert: "Select at least one developer"
+      return
     end
+
+    invalid_ids = dev_ids.reject { |id| User.developer.exists?(id: id) }
+    if invalid_ids.any?
+      redirect_back fallback_location: projects_path, alert: "Invalid developer selected"
+    end
+  end
+
+  def project_developer_ids
+    params.dig(:project, :developer_ids).to_a.reject(&:blank?)
   end
 end

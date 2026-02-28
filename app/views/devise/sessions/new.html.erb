@@ -5,7 +5,7 @@
     <h1 style="margin-bottom: 20px; color: #333;">Welcome Back 👋</h1>
 
     <div style="width: 100%; margin-bottom: 15px;">
-      <% if flash.now[:alert].present? %>
+      <% if flash[:alert].present? %>
         <% flash.each do |type, message| %>
           <div style="background-color: #ffe6e6; color: #cc0000; padding: 10px; border-radius: 8px; font-size: 14px;">
             <%= message %>
@@ -14,26 +14,38 @@
       <% end %>
     </div>
 
-    <%= form_with url: login_path, data: {turbo: false} do |form| %>
+    <!-- ✅ Devise Compatible Form -->
+    <%= form_with model: resource,
+                  as: resource_name,
+                  url: session_path(resource_name),
+                  local: true,
+                  data: { turbo: false } do |form| %>
 
       <div style="margin-bottom: 20px; width: 100%;">
         <%= form.label :email, "Email", style: "font-weight: bold; font-size: 14px; color: #555;" %>
-        <%= form.email_field :email, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+        <%= form.email_field :email,
+              autofocus: true,
+              autocomplete: "email",
+              style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
       <div style="margin-bottom: 25px; width: 100%;">
         <%= form.label :password, "Password", style: "font-weight: bold; font-size: 14px; color: #555;" %>
-        <%= form.password_field :password, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+        <%= form.password_field :password,
+              autocomplete: "current-password",
+              style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
       <div style="width: 100%;">
-        <%= form.submit "Login", style: "width: 100%; padding: 12px; background-color: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;" %>
+        <%= form.submit "Login",
+              style: "width: 100%; padding: 12px; background-color: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;" %>
       </div>
 
       <div style="margin-top: 20px; font-size: 14px; text-align: center;">
         <p style="color: #555;">
           Don't have an account? 
-          <%= link_to "Sign Up", new_user_registration_path, style: "color: #667eea; font-weight: bold; text-decoration: none;" %>
+          <%= link_to "Sign Up", new_user_registration_path,
+                style: "color: #667eea; font-weight: bold; text-decoration: none;" %>
         </p>
       </div>
 

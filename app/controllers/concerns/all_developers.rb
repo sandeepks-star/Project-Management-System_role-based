@@ -6,6 +6,6 @@ module AllDevelopers
   end
 
   def show_all_developers
-    @developers = Developer.all
+    @developers = User.developer
   end
 end

@@ -7,14 +7,14 @@
 
     <div style="display: flex; gap: 10px">
 
-      <% if current_user.is_a?(Manager) %>
+      <% if current_user.manager? %>
         <%= link_to "Create New Task", new_project_task_path(@project) %>
       <% end %>
 
       <%= link_to "Back to Projects", projects_path %>
 
       <%= button_to "Logout",
-            logout_path,
+            destroy_user_session_path,
             method: :delete,
             data: { confirm: "Are you sure?" } %>
     </div>
@@ -44,7 +44,7 @@
               <%= link_to "Show", project_task_path(@project, task) %>
             </button>
             <hr>
-            <% if current_user.is_a?(Manager) %>
+            <% if current_user.manager? %>
               <%= button_to "Delete",
                     project_task_path(@project, task),
                     method: :delete,

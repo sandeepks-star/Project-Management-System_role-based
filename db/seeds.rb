@@ -9,10 +9,12 @@ puts "Creating Managers..."
 manager_names = ["Sandeep Kumar", "Rahul Sharma", "Amit Verma"]
 
 managers = manager_names.map do |name|
-  Manager.create!(
+  User.create!(
     name: name,
     email: name.downcase.gsub(" ", "") + "@example.com",
-    password: "Password@123"
+    password: "Password@123",
+    password_confirmation: "Password@123",
+    role: :manager
   )
 end
 
@@ -32,10 +34,12 @@ developer_names = [
 ]
 
 developers = developer_names.map do |name|
-  Developer.create!(
+  User.create!(
     name: name,
     email: name.downcase.gsub(" ", "") + "@example.com",
-    password: "Password@123"
+    password: "Password@123",
+    password_confirmation: "Password@123",
+    role: :developer
   )
 end
 
@@ -50,7 +54,7 @@ puts "Creating Projects and Tasks..."
     start_date: Date.today - rand(10),
     end_date: Date.today + rand(30..60),
     status: :pending,
-    manager: manager
+    user_id: manager.id
   )
 
   # Assign random developers to project
@@ -80,4 +84,4 @@ puts "Creating Projects and Tasks..."
 
 end
 
-puts "Seed completed successfully"
+puts "Seed completed successfully 🚀"

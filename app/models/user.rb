@@ -1,24 +1,37 @@
 class User < ApplicationRecord
-  has_secure_password
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  enum :role, { developer: 0, manager: 1 }
 
   # scope :first_user, -> {User.first}
 
+  has_and_belongs_to_many :projects,
+                          class_name: "Project",
+                          join_table: "projects_users",
+                          foreign_key: "user_id",
+                          association_foreign_key: "project_id"
+
+  has_many :managed_projects,
+           class_name: "Project",
+           foreign_key: "user_id",
+           inverse_of: :manager,
+           dependent: :destroy
+
+  # has_and_belongs_to_many :projects_assigned,
+  #                         class_name: "Project",
+  #                         join_table: "projects_users",
+  #                         foreign_key: "user_id",
+  #                         association_foreign_key: "project_id"
+
+  has_and_belongs_to_many :tasks,
+                          class_name: "Task",
+                          join_table: "tasks_users",
+                          foreign_key: "user_id",
+                          association_foreign_key: "task_id"
+
   validates :name, presence: true, format: { with: /\A[a-zA-Z\s]+\z/ }
 
-  validates :email,
-            presence: true,
-            uniqueness: true,
-            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
-
-  validates :password,
-            presence: true,
-            format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}\z/, message: "must be at least 8 characters long and include atleast one number, one letter and one speacial character." }
-
-  def all_unscoped_projects
-    projects.unscoped.all
-  end
-
-  def self.first_user
-    User.first
-  end
 end

@@ -23,8 +23,8 @@
 
     <!-- Error Messages -->
     <div style="width: 100%; margin-bottom: 15px;">
-      <% if @user.errors.any? %>
-        <% @user.errors.full_messages.each do |message| %>
+      <% if resource.errors.any? %>
+        <% resource.errors.full_messages.each do |message| %>
           <div style="
             background-color: #ffe6e6;
             color: #cc0000;
@@ -39,44 +39,56 @@
       <% end %>
     </div>
 
-    <%= form_with model: @user, local: true do |form| %>
+    <!-- ✅ Devise Compatible Form -->
+    <%= form_with model: resource,
+                  as: resource_name,
+                  url: registration_path(resource_name),
+                  local: true do |form| %>
 
       <!-- Name -->
       <div style="margin-bottom: 20px; width: 100%;">
         <%= form.label :name, "Name", style: "font-weight: bold; font-size: 14px; color: #555;" %>
-        <%= form.text_field :name, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+        <%= form.text_field :name,
+              style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
       <!-- Email -->
       <div style="margin-bottom: 20px; width: 100%;">
         <%= form.label :email, "Email", style: "font-weight: bold; font-size: 14px; color: #555;" %>
-        <%= form.email_field :email, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+        <%= form.email_field :email,
+              autocomplete: "email",
+              style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
       <!-- Password -->
       <div style="margin-bottom: 20px; width: 100%;">
         <%= form.label :password, "Password", style: "font-weight: bold; font-size: 14px; color: #555;" %>
-        <%= form.password_field :password, style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+        <%= form.password_field :password,
+              autocomplete: "new-password",
+              style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
-      <!-- Type -->
+      <!-- Role (Enum Based) -->
       <div style="margin-bottom: 25px; width: 100%;">
-        <%= form.label :type, "Role", style: "font-weight: bold; font-size: 14px; color: #555;" %>
-        <%= form.select :type, ["Manager", "Developer"],
-            {},
-            style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
+        <%= form.label :role, "Role", style: "font-weight: bold; font-size: 14px; color: #555;" %>
+        <%= form.select :role,
+              User.roles.keys.map { |r| [r.titleize, r] },
+              {},
+              style: "width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; outline: none;" %>
       </div>
 
       <!-- Submit -->
       <div style="width: 100%;">
-        <%= form.submit "Sign Up", style: "width: 100%; padding: 12px; background-color: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" %>
+        <%= form.submit "Sign Up",
+              style: "width: 100%; padding: 12px; background-color: #667eea; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" %>
       </div>
 
       <!-- Login Link -->
       <div style="margin-top: 20px; font-size: 14px; text-align: center;">
         <p style="color: #555;">
           Already have an account?
-          <%= link_to "Login", new_user_session_path, style: "color: #667eea; font-weight: bold; text-decoration: none;" %>
+          <%= link_to "Login", new_user_session_path,
+                style: "color: #667eea; font-weight: bold; text-decoration: none;" %>
         </p>
       </div>
 

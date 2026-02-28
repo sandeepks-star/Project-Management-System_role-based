@@ -71,6 +71,8 @@ group :development, :test do
 
   gem 'rspec-rails'
 
+  gem 'devise'
+
   # gem "letter_opener"
 
 end
